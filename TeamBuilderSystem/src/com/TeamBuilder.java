@@ -51,6 +51,9 @@ public class TeamBuilder {
 		int runs = Integer.parseInt(br.readLine());
 		System.out.println("Enter Player Wickets he have Taken :");
 		int wickets = Integer.parseInt(br.readLine());
+		System.out.println("Press 1 for Batsman :");
+		System.out.println("Press 2 for Bowller : ");
+		System.out.println("press 3 for Wikcetkeeper :");
 		int categoryChoice = Integer.parseInt(br.readLine());
 		switch (categoryChoice) {
 
