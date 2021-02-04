@@ -45,18 +45,16 @@ public class TeamBuilder {
 		teamsService.sortTeamByDate();
 
 	}
-
 	public void addPlayerToTeam(String playerName, String teamName) throws NumberFormatException, IOException {
 		System.out.println("Enter Player Runs :");
 		int runs = Integer.parseInt(br.readLine());
 		System.out.println("Enter Player Wickets he have Taken :");
 		int wickets = Integer.parseInt(br.readLine());
-		System.out.println("Press 1 for Batsman :");
+		System.out.println("Press 1 for Batsmen :");
 		System.out.println("Press 2 for Bowller : ");
 		System.out.println("press 3 for Wikcetkeeper :");
 		int categoryChoice = Integer.parseInt(br.readLine());
 		switch (categoryChoice) {
-
 		case 1:
 			category = PlayerType.BATSMEN;
 			break;
@@ -64,10 +62,9 @@ public class TeamBuilder {
 			category = PlayerType.BOWLLER;
 			break;
 		case 3:
-			category = PlayerType.WIKEETKEEPER;
+			category = PlayerType.WICKETKEEPER;
 			break;
 		}
-
 		int id = new Random().nextInt();
 		Record record = new Record(id, runs, wickets);
 		teamsService.addPlayer(new Player(id, playerName, record, category), teamName);
