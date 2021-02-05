@@ -56,8 +56,10 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [name=" + name + "]";
+		return "Player [name=" + name + ", record=" + record + ", playerType=" + playerType + "]";
 	}
+
+
 
 	public static Comparator<Player> PlayerComp = new Comparator<Player>() {
 

@@ -24,6 +24,9 @@ public class TeamDB implements IDBConnections<Team> {
 
 	Map<String, Team> teamCache = new HashMap<>();
 
+	/**
+	 * this method will save passed team in teamCache
+	 */
 	@Override
 	public void saveAndUpdate(Team team) {
 
@@ -33,28 +36,39 @@ public class TeamDB implements IDBConnections<Team> {
 		}
 	}
 
+	/**
+	 * this method will return a team
+	 */
 	@Override
 	public Team get(String name) {
-		// TODO Auto-generated method stub
+
 		return teamCache.get(name);
 	}
 
+	/**
+	 * this method will remove passed Team from teamCache map
+	 */
 	@Override
 	public boolean remove(Team t) {
-		// TODO Auto-generated method stub
+
 		return teamCache.remove(t.getName()) != null;
 	}
 
+	/**
+	 * this method will return number of team present in system
+	 */
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 
 		return teamCache.size();
 	}
 
+	/**
+	 * this method will return true if it founds given player name in list
+	 */
 	@Override
 	public boolean searchPlayer(String playerName, String teamName) {
-		// TODO Auto-generated method stub
+
 		boolean result = false;
 		if (teamCache.containsKey(teamName)) {
 			Team myTeam = teamCache.get(teamName);
@@ -67,34 +81,51 @@ public class TeamDB implements IDBConnections<Team> {
 			}
 		}
 		return result = false;
-
 	}
+
+	/**
+	 * this method accepts team name and sorts player List by their names
+	 */
 
 	@Override
 	public void sortPlayerList(String teamName) {
-		// TODO Auto-generated method stub
-		if (teamCache.containsKey(teamName)) {
-			Team myTeam = teamCache.get(teamName);
-			List<Player> playerList = myTeam.getPlayerList();
-			Collections.sort(playerList, Player.PlayerComp);
-			for (Player p : playerList) {
-				System.out.println(p.getName());
-			}
 
+		/*
+		 * if (teamCache.containsKey(teamName)) { Team myTeam = teamCache.get(teamName);
+		 * List<Player> playerList = myTeam.getPlayerList();
+		 * Collections.sort(playerList, Player.PlayerComp); for (Player p : playerList)
+		 * { System.out.println(p.getName()); }
+		 * 
+		 * }
+		 */
+
+		Team myTeam = teamCache.get(teamName);
+		if (myTeam != null) {
+			List<Player> players = myTeam.getPlayerList();
+			players.sort(Comparator.comparing(Player::getName));
+			players.stream().forEach(player -> System.out.println(player));
 		}
 
 	}
 
+	/**
+	 * this method displays sorted team by their names which is sorted by keys which
+	 * are stored in teamCache
+	 */
 	@Override
 	public void sortTeam() {
-		if (teamCache != null) {
-			Map<String, Team> sorted = new TreeMap<>(teamCache);
-			Set<Entry<String, Team>> enteries = sorted.entrySet();
-			System.out.println("List of Teams Sorted By Team Name");
-			for (Entry<String, Team> mapping : enteries) {
-				System.out.println(mapping.getKey() + "   " + mapping.getValue().getCreation());
-			}
+		/*
+		 * if (teamCache != null) { // old logic Map<String, Team> sorted = new
+		 * TreeMap<>(teamCache); Set<Entry<String, Team>> enteries = sorted.entrySet();
+		 * System.out.println("List of Teams Sorted By Team Name"); for (Entry<String,
+		 * Team> mapping : enteries) { System.out.println(mapping.getKey() + "   " +
+		 * mapping.getValue().getCreation()); }
+		 * 
+		 * } else { System.out.println("Team does not Exist.."); }
+		 */
 
+		if (teamCache != null) { // it will sort by teams by their names
+			teamCache.entrySet().stream().sorted(Map.Entry.<String, Team>comparingByKey()).forEach(System.out::println);
 		} else {
 			System.out.println("Team does not Exist..");
 		}
@@ -122,13 +153,20 @@ public class TeamDB implements IDBConnections<Team> {
 			Collections.sort(listOfEntries, DateComparator);
 			LinkedHashMap<String, Team> sortedByDate = new LinkedHashMap<String, Team>(listOfEntries.size());
 			for (Entry<String, Team> entry : listOfEntries) {
-				sortedByDate.put(entry.getKey(), entry.getValue());
+				sortedByDate.put(entry.getKey(), entry.getValue()); // it puts sorted date in linkedHashMap object
 			}
 			System.out.println("Sorted Team List by Creation Date :");
 			Set<Entry<String, Team>> entrySetSortedByDate = sortedByDate.entrySet();
-			for (Entry<String, Team> mapping : entrySetSortedByDate) {
-				System.out.println(mapping.getKey() + " ---> " + mapping.getValue().getCreation());
-			}
+
+			/*
+			 * for (Entry<String, Team> mapping : entrySetSortedByDate) {
+			 * System.out.println(mapping.getKey() + " ---> " +
+			 * mapping.getValue().getCreation());
+			 * 
+			 * }
+			 */
+
+			sortedByDate.entrySet().stream().forEach((e -> System.out.println(e.getKey() + ":" + e.getValue())));
 
 		} else {
 			System.out.println("Team does not Exist..");
@@ -138,14 +176,13 @@ public class TeamDB implements IDBConnections<Team> {
 
 	@Override
 	public void addPlayerToTeamPlayerList(Player player, String teamName) {
-		// TODO Auto-generated method stub
 
 		if (teamCache.containsKey(teamName)) {
 			Team team = teamCache.get(teamName);
-			List <Player> myPlayer=new ArrayList<>(team.getPlayerList());
+			List<Player> myPlayer = new ArrayList<>(team.getPlayerList());
 			myPlayer.add(player);
 			team.setPlayerList(myPlayer);
-		    //team.playerList.add(player);
+			// team.playerList.add(player);
 			System.out.println("Player is Added Successfully ...!");
 		} else {
 
@@ -156,12 +193,13 @@ public class TeamDB implements IDBConnections<Team> {
 
 	@Override
 	public void removePlayer(String pName, String tName) {
-		// TODO Auto-generated method stub
+
 		if (teamCache.containsKey(tName)) {
 			Team myTeam = teamCache.get(tName);
-			List <Player> myPlayer=new ArrayList<>(myTeam.getPlayerList());
+			List<Player> myPlayer = new ArrayList<>(myTeam.getPlayerList());
 			myPlayer.remove(pName);
-			myTeam.setPlayerList(myPlayer.stream().distinct().collect(Collectors.toList()));
+			myTeam.setPlayerList(myPlayer.stream().distinct().collect(Collectors.toList())); // it store only distinct
+																								// player in list
 			System.out.println("Player is Removed Successfully...!");
 
 		} else {
@@ -170,24 +208,30 @@ public class TeamDB implements IDBConnections<Team> {
 		}
 	}
 
+	/**
+	 * this methods returns total number of players in team.
+	 */
 	@Override
-	public int playerCount(String teamName) {
-		// TODO Auto-generated method stub
+	public int playerCount(String teamName) { // this will return count of players in team
+
 		int count = 0;
 		if (teamCache.containsKey(teamName)) {
 			Team myTeam = teamCache.get(teamName);
-			List<Player> myPlayer=new ArrayList<>(myTeam.getPlayerList());
-			count = myPlayer.size();
+			count = myTeam.getPlayerList().size();
 		}
 		return count;
 	}
 
+	/**
+	 * this method accepts two team and match and displays match result according
+	 * their record.
+	 */
 	@Override
 	public void playMatch(String team1, String team2, Match matchobj) {
-		// TODO Auto-generated method stub
+
 		Team myTeam1 = teamCache.get(team1);
 		Team myTeam2 = teamCache.get(team2);
-		
+
 		int score1 = matchobj.getRecordTeam1().getRuns();
 		int score2 = matchobj.getRecordTeam2().getRuns();
 		if (myTeam1 != null && myTeam2 != null) {
@@ -200,7 +244,7 @@ public class TeamDB implements IDBConnections<Team> {
 				System.out.println("Winner Team is" + myTeam2.getName());
 			}
 
-		}else {
+		} else {
 			System.out.println("please enter valid two Teams..! ");
 		}
 	}
