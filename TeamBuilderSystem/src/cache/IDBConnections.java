@@ -1,6 +1,9 @@
-package com;
+package cache;
 
 import java.util.List;
+
+import pojo.Match;
+import pojo.Player;
 
 public interface IDBConnections<T> {
 

@@ -1,4 +1,4 @@
-package com;
+package pojo;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,7 +9,7 @@ public class Team  {
 	private long id;
 	private String name;
 	private Date creation;
-	public List<Player> playerList=new ArrayList<>();
+	private List<Player> playerList=new ArrayList<>();
 	
 	public Team(long id, String name, Date creation) {
 		super();

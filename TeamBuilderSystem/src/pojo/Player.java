@@ -1,4 +1,4 @@
-package com;
+package pojo;
 
 import java.util.Comparator;
 

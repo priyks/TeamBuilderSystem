@@ -1,8 +1,14 @@
-package com;
+package services;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import cache.IDBConnections;
+import pojo.Match;
+import pojo.Player;
+import pojo.Record;
+import pojo.Team;
 
 public class TeamService implements TeamBSI {
 

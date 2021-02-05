@@ -1,4 +1,4 @@
-package com;
+package model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import pojo.Team;
+import services.TeamBuilder;
 
 public class Main {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -134,6 +137,7 @@ public class Main {
 				 System.out.println("Enter Team2 Name : ");
 				 String matchTeam2=br.readLine();
 				 teamBuilder.playeMatch(matchTeam1, matchTeam2);
+				 break;
 			case 11:
 				e = 11;
 				break;

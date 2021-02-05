@@ -1,4 +1,4 @@
-package com;
+package cache;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +13,12 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+import pojo.Record;
+import pojo.Match;
+import pojo.Player;
+import pojo.Team;
 
 public class TeamDB implements IDBConnections<Team> {
 
@@ -136,7 +142,10 @@ public class TeamDB implements IDBConnections<Team> {
 
 		if (teamCache.containsKey(teamName)) {
 			Team team = teamCache.get(teamName);
-			team.playerList.add(player);
+			List <Player> myPlayer=new ArrayList<>(team.getPlayerList());
+			myPlayer.add(player);
+			team.setPlayerList(myPlayer);
+		    //team.playerList.add(player);
 			System.out.println("Player is Added Successfully ...!");
 		} else {
 
@@ -150,7 +159,9 @@ public class TeamDB implements IDBConnections<Team> {
 		// TODO Auto-generated method stub
 		if (teamCache.containsKey(tName)) {
 			Team myTeam = teamCache.get(tName);
-			myTeam.playerList.remove(pName);
+			List <Player> myPlayer=new ArrayList<>(myTeam.getPlayerList());
+			myPlayer.remove(pName);
+			myTeam.setPlayerList(myPlayer.stream().distinct().collect(Collectors.toList()));
 			System.out.println("Player is Removed Successfully...!");
 
 		} else {
@@ -165,7 +176,8 @@ public class TeamDB implements IDBConnections<Team> {
 		int count = 0;
 		if (teamCache.containsKey(teamName)) {
 			Team myTeam = teamCache.get(teamName);
-			count = myTeam.playerList.size();
+			List<Player> myPlayer=new ArrayList<>(myTeam.getPlayerList());
+			count = myPlayer.size();
 		}
 		return count;
 	}
@@ -175,6 +187,7 @@ public class TeamDB implements IDBConnections<Team> {
 		// TODO Auto-generated method stub
 		Team myTeam1 = teamCache.get(team1);
 		Team myTeam2 = teamCache.get(team2);
+		
 		int score1 = matchobj.getRecordTeam1().getRuns();
 		int score2 = matchobj.getRecordTeam2().getRuns();
 		if (myTeam1 != null && myTeam2 != null) {
